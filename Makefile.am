@@ -17,5 +17,5 @@
 
 lib_LTLIBRARIES = libdromozoa-hook.la
 
-libdromozoa_unix_la_LDFLAGS = -shared
-libdromozoa_unix_la_SOURCES = hook.cpp
+libdromozoa_hook_la_LDFLAGS = -shared
+libdromozoa_hook_la_SOURCES = hook.cpp

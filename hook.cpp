@@ -16,15 +16,48 @@
 // along with dromozoa-atexit.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#include <sstream>
+#include <string>
+#include <vector>
+
+extern char** environ;
 
 namespace {
-  void atexit_cb() {
-    std::cerr << "test" << std::endl;
+  bool starts_with(const char* input, const char* test) {
+    return strncmp(input, test, strlen(test)) == 0;
+  }
+
+  void hook_atexit() {
+    char** save = environ;
+    std::string command = getenv("DROMOZOA_HOOK_ATEXIT");
+    std::vector<char*> envp;
+    for (char** i = environ; *i != '\0'; ++i) {
+      const char* s = *i;
+      if (starts_with(s, "DROMOZOA_HOOK_ATEXIT=")) {
+        continue;
+      }
+      if (starts_with(s, "DYLD_INSERT_LIBRARIES=")) {
+        continue;
+      }
+      envp.push_back(*i);
+    }
+    std::ostringstream out;
+    out << "DROMOZOA_HOOK_PID=" << getpid();
+    std::string pid = out.str();
+    envp.push_back(const_cast<char*>(pid.c_str()));
+    envp.push_back(0);
+
+    environ = &envp[0];
+    system(command.c_str());
+    environ = save;
   }
 }
 
 __attribute((constructor)) void constructor() {
   if (getenv("DROMOZOA_HOOK_ATEXIT")) {
-    atexit(&atexit_cb);
+    atexit(hook_atexit);
   }
 }
