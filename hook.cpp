@@ -26,32 +26,42 @@
 extern char** environ;
 
 namespace {
+  static const char* unset_envs[] = {
+    "DROMOZOA_HOOK_ATEXIT=",
+    "DYLD_INSERT_LIBRARIES=",
+    0,
+  };
+
   bool starts_with(const char* input, const char* test) {
     return strncmp(input, test, strlen(test)) == 0;
   }
 
   void hook_atexit() {
     char** save = environ;
-    std::string command = getenv("DROMOZOA_HOOK_ATEXIT");
-    std::vector<char*> envp;
-    for (char** i = environ; *i != '\0'; ++i) {
-      const char* s = *i;
-      if (starts_with(s, "DROMOZOA_HOOK_ATEXIT=")) {
-        continue;
+    try {
+      if (const char* command = getenv("DROMOZOA_HOOK_ATEXIT")) {
+        std::vector<const char*> envs;
+        for (const char* const* i = environ; *i != '\0'; ++i) {
+          bool unset = false;
+          for (const char* const* j = unset_envs; *j; ++j) {
+            if (starts_with(*i, *j)) {
+              unset = true;
+              break;
+            }
+          }
+          if (!unset) {
+            envs.push_back(*i);
+          }
+        }
+        std::ostringstream out;
+        out << "DROMOZOA_HOOK_PID=" << getpid();
+        std::string pid = out.str();
+        envs.push_back(pid.c_str());
+        envs.push_back(0);
+        environ = const_cast<char**>(&envs[0]);
+        system(command);
       }
-      if (starts_with(s, "DYLD_INSERT_LIBRARIES=")) {
-        continue;
-      }
-      envp.push_back(*i);
-    }
-    std::ostringstream out;
-    out << "DROMOZOA_HOOK_PID=" << getpid();
-    std::string pid = out.str();
-    envp.push_back(const_cast<char*>(pid.c_str()));
-    envp.push_back(0);
-
-    environ = &envp[0];
-    system(command.c_str());
+    } catch (...) {}
     environ = save;
   }
 }
