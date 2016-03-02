@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with dromozoa-hook.  If not, see <http://www.gnu.org/licenses/>.
 
+bin_SCRIPTS = dromozoa-memcheck
 lib_LTLIBRARIES = libdromozoa-hook.la
 
 libdromozoa_hook_la_LDFLAGS = -shared

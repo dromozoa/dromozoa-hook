@@ -29,6 +29,9 @@ namespace {
   static const char* unset_envs[] = {
     "DROMOZOA_HOOK_ATEXIT=",
     "DYLD_INSERT_LIBRARIES=",
+    "MallocPreScribble=",
+    "MallocScribble=",
+    "MallocStackLoggingNoCompact=",
     0,
   };
 
