@@ -56,5 +56,14 @@ then
   else
     printf 'cannot find %s\n' "$filename" >&2
   fi
+elif valgrind --version 2>&1
+then
+  exec valgrind \
+    --track-fds=yes \
+    --error-exitcode=1 \
+    --leak-check=full \
+    --show-reachable=yes \
+    --track-origins=yes \
+      "$@"
 fi
 exit 1
