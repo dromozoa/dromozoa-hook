@@ -1,0 +1,1 @@
+m4_define(DROMOZOA_HOOK_VERSION,0.0)
