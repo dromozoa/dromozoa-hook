@@ -44,7 +44,7 @@ namespace {
     try {
       if (char* command = getenv("DROMOZOA_HOOK_ATEXIT")) {
         std::vector<char*> envs;
-        for (char** i = environ; *i != '\0'; ++i) {
+        for (char** i = environ; *i != 0; ++i) {
           bool unset = false;
           for (const char* const* j = unset_envs; *j; ++j) {
             if (starts_with(*i, *j)) {
