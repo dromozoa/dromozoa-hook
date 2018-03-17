@@ -28,28 +28,28 @@ then
   }
 
   dromozoa_memcheck() {
-    filename=$1
+    hook=$1
     shift
-    if test -f "$filename"
+    if test -f "$hook"
     then
       case x$TMPDIR in
         x) TMPDIR=/tmp;;
       esac
-      tmpname=`mktemp "$TMPDIR/dromozoa-XXXXXX" 2>/dev/null || :`
-      case x$tmpname in
-        x) tmpname=$TMPDIR/dromozoa-$$-$RANDOM;;
+      tmp=`(umask 077 && mktemp "$TMPDIR/dromozoa-XXXXXX" 2>/dev/null || :)`
+      case x$tmp in
+        x) tmp=$TMPDIR/dromozoa-$$-$RANDOM;;
       esac
-      trap "rm -f '$tmpname'" 0
+      trap "rm -f '$tmp'" 0
       env \
-        DROMOZOA_HOOK_ATEXIT='leaks $DROMOZOA_HOOK_PID; echo $? >"$DROMOZOA_HOOK_TMPNAME"' \
-        DROMOZOA_HOOK_TMPNAME="$tmpname" \
-        DYLD_INSERT_LIBRARIES="$filename" \
+        DROMOZOA_HOOK_ATEXIT='leaks $DROMOZOA_HOOK_PID; echo $? >"$DROMOZOA_HOOK_TMP"' \
+        DROMOZOA_HOOK_TMP="$tmp" \
+        DYLD_INSERT_LIBRARIES="$hook" \
         MallocStackLoggingNoCompact=1 \
         MallocScribble=1 \
         MallocPreScribble=1 \
           "$@"
       status1=$?
-      status2=`cat "$tmpname"`
+      status2=`cat "$tmp"`
       case x$status1$status2 in
         x00) exit 0;;
       esac
