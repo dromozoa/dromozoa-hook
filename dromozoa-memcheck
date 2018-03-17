@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# Copyright (C) 2016 Tomoyuki Fujimori <moyu@dromozoa.com>
+# Copyright (C) 2016,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 #
 # This file is part of dromozoa-hook.
 #
@@ -19,42 +19,55 @@
 
 if leaks -h >/dev/null 2>&1
 then
-  here=`expr "x$0" : 'x\(.*[^/]\)//*[^/][^/]*/*$' '|' "x$0" : 'x\(//\)[^/]' '|' "x$0" : 'x\(//\)$' '|' "x$0" : 'x\(/\)' '|' .`
-  here=`(cd "$here" && pwd)`
-  root=`(cd "$here/.." && pwd)`
-  filename=$root/lib/libdromozoa-hook.la
-  if test -f "$filename"
-  then
-    . "$filename"
-    filename=$libdir/$dlname
-    if test -f "$filename"
+  dromozoa_dirname() {
+    expr "x$1" : 'x\(.*[^/]\)//*[^/][^/]*/*$' \
+      '|' "x$1" : 'x\(//\)[^/]' \
+      '|' "x$1" : 'x\(//\)$' \
+      '|' "x$1" : 'x\(/\)' \
+      '|' .
+  }
+
+  dromozoa_memcheck() {
+    hook=$1
+    shift
+    if test -f "$hook"
     then
       case x$TMPDIR in
         x) TMPDIR=/tmp;;
       esac
-      tmpname=`mktemp "$TMPDIR/dromozoa-XXXXXX" 2>/dev/null || :`
-      case x$tmpname in
-        x) tmpname=$TMPDIR/dromozoa-$$-$RANDOM;;
+      tmp=`(umask 077 && mktemp "$TMPDIR/dromozoa-XXXXXX" 2>/dev/null || :)`
+      case x$tmp in
+        x) tmp=$TMPDIR/dromozoa-$$-$RANDOM;;
       esac
-      trap "rm -f '$tmpname'" 0
+      trap "rm -f '$tmp'" 0
       env \
-        DROMOZOA_HOOK_ATEXIT='leaks $DROMOZOA_HOOK_PID; echo $? >"$DROMOZOA_HOOK_TMPNAME"' \
-        DROMOZOA_HOOK_TMPNAME="$tmpname" \
-        DYLD_INSERT_LIBRARIES="$filename" \
+        DROMOZOA_HOOK_ATEXIT='leaks $DROMOZOA_HOOK_PID; echo $? >"$DROMOZOA_HOOK_TMP"' \
+        DROMOZOA_HOOK_TMP="$tmp" \
+        DYLD_INSERT_LIBRARIES="$hook" \
         MallocStackLoggingNoCompact=1 \
         MallocScribble=1 \
         MallocPreScribble=1 \
           "$@"
       status1=$?
-      status2=`cat "$tmpname"`
+      status2=`cat "$tmp"`
       case x$status1$status2 in
         x00) exit 0;;
       esac
-    else
-      printf 'cannot find %s\n' "$filename" >&2
     fi
+  }
+
+  here=`dromozoa_dirname "$0"`
+  here=`(cd "$here" && pwd)`
+  root=`(cd "$here/.." && pwd)`
+  if test -f "$here/.libs/libdromozoa-hook.dylib"
+  then
+    dromozoa_memcheck "$here/.libs/libdromozoa-hook.dylib" "$@"
+  elif test -f "$root/lib/libdromozoa-hook.la"
+  then
+    . "$root/lib/libdromozoa-hook.la"
+    dromozoa_memcheck "$libdir/$dlname" "$@"
   else
-    printf 'cannot find %s\n' "$filename" >&2
+    echo "cannot find libdromozoa-hook" >&2
   fi
 elif valgrind --version 2>&1
 then
