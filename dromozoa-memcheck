@@ -20,10 +20,11 @@
 dromozoa_error() {
   if test -t 2
   then
-    printf '\33[33m[ERROR] %s\33[0m\n' "$1" >&2
-  else
-    printf '[ERROR] %s\n' "$1" >&2
+    case X`tput colors 2>&1 || :` in
+      X8|X256) printf '\33[33m[ERROR] %s\33[0m\n' "$1" >&2; exit 1;;
+    esac
   fi
+  echo "[ERROR] $1\n" >&2
   exit 1
 }
 
@@ -40,37 +41,32 @@ then
   dromozoa_memcheck() {
     hook=$1
     shift
-    if test -f "$hook"
-    then
-      case X$TMPDIR in
-        X) TMPDIR=/tmp;;
-      esac
-      tmp=`(umask 077 && mktemp "$TMPDIR/dromozoa-XXXXXX" 2>/dev/null || :)`
-      case X$tmp in
-        X) tmp=$TMPDIR/dromozoa-$$-$RANDOM;;
-      esac
-      trap "rm -f '$tmp'" 0
-      env \
-        DROMOZOA_HOOK_ATEXIT='leaks "$DROMOZOA_HOOK_PID"; echo "$?" >"$DROMOZOA_HOOK_TMP"' \
-        DROMOZOA_HOOK_TMP="$tmp" \
-        DYLD_INSERT_LIBRARIES="$hook" \
-        MallocStackLoggingNoCompact=1 \
-        MallocScribble=1 \
-        MallocPreScribble=1 \
-          "$@"
-      status=$?
-      case X$status in
-        X0) ;;
-        *) exit "$status";;
-      esac
-      status=`cat "$tmp"`
-      case X$status in
-        X) dromozoa_error "cannot insert hook (maybe setuid/setgid binary or signed with entitlements)";;
-        X0) ;;
-        *) exit "$status";;
-      esac
-      exit
-    fi
+    case X$TMPDIR in
+      X) TMPDIR=/tmp;;
+    esac
+    tmp=`(umask 077 && mktemp "$TMPDIR/dromozoa-XXXXXX" 2>/dev/null || :)`
+    case X$tmp in
+      X) tmp=$TMPDIR/dromozoa-$$-$RANDOM;;
+    esac
+    trap "rm -f '$tmp'" 0
+    env \
+      DROMOZOA_HOOK_ATEXIT='leaks "$DROMOZOA_HOOK_PID"; echo "$?" >"$DROMOZOA_HOOK_TMP"' \
+      DROMOZOA_HOOK_TMP="$tmp" \
+      DYLD_INSERT_LIBRARIES="$hook" \
+      MallocStackLoggingNoCompact=1 \
+      MallocScribble=1 \
+      MallocPreScribble=1 \
+        "$@"
+    status=$?
+    case X$status in
+      X0) ;;
+      *) exit "$status";;
+    esac
+    status=`cat "$tmp"`
+    case X$status in
+      X) dromozoa_error "cannot insert hook (maybe setuid/setgid binary or signed with entitlements)";;
+      *) exit "$status";;
+    esac
   }
 
   here=`dromozoa_dirname "$0"`
@@ -82,10 +78,12 @@ then
   elif test -f "$root/lib/libdromozoa-hook.la"
   then
     . "$root/lib/libdromozoa-hook.la"
-    dromozoa_memcheck "$libdir/$dlname" "$@"
-  else
-    dromozoa_error "cannot find hook"
+    if test -f "$libdir/$dlname"
+    then
+      dromozoa_memcheck "$libdir/$dlname" "$@"
+    fi
   fi
+  dromozoa_error "cannot find hook"
 elif valgrind --version 2>&1
 then
   exec valgrind \
