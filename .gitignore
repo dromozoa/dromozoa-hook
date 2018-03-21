@@ -27,4 +27,8 @@
 /m4/lt~obsolete.m4
 /missing
 /stamp-h1
+/test*.exe
+/test*.log
+/test*.trs
+/test-driver
 Makefile
