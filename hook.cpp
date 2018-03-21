@@ -35,10 +35,6 @@ namespace {
     0,
   };
 
-  bool starts_with(const char* input, const char* test) {
-    return strncmp(input, test, strlen(test)) == 0;
-  }
-
   void hook_atexit() {
     char** save = environ;
     try {
@@ -47,7 +43,7 @@ namespace {
         for (char** i = environ; *i != 0; ++i) {
           bool unset = false;
           for (const char* const* j = unset_envs; *j; ++j) {
-            if (starts_with(*i, *j)) {
+            if (strncmp(*i, *j, strlen(*j)) == 0) {
               unset = true;
               break;
             }
