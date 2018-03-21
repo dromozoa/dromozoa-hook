@@ -20,11 +20,10 @@
 dromozoa_error() {
   if test -t 2
   then
-    case X`tput colors 2>&1 || :` in
-      X8|X256) printf '\33[33m[ERROR] %s\33[0m\n' "$1" >&2; exit 1;;
-    esac
+    printf '\33[33m[ERROR] %s\33[0m\n' "$1" >&2
+  else
+    printf '[ERROR] %s\n' "$1" >&2
   fi
-  echo "[ERROR] $1\n" >&2
   exit 1
 }
 
