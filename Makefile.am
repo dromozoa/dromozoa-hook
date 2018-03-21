@@ -18,7 +18,8 @@
 EXTRA_DIST = \
 	.gitignore \
 	README.md \
-	$(bin_SCRIPTS)
+	$(bin_SCRIPTS) \
+	$(TESTS)
 TESTS = test1.sh test2-0.sh test2-1.sh
 
 bin_SCRIPTS = dromozoa-memcheck
