@@ -17,14 +17,24 @@
 # You should have received a copy of the GNU General Public License
 # along with dromozoa-hook.  If not, see <http://www.gnu.org/licenses/>.
 
+dromozoa_error() {
+  if test -t 2
+  then
+    printf '\33[33m[ERROR] %s\33[0m\n' "$1" >&2
+  else
+    printf '[ERROR] %s\n' "$1" >&2
+  fi
+  exit 1
+}
+
 if leaks -h >/dev/null 2>&1
 then
   dromozoa_dirname() {
-    expr "x$1" : 'x\(.*[^/]\)//*[^/][^/]*/*$' \
-      '|' "x$1" : 'x\(//\)[^/]' \
-      '|' "x$1" : 'x\(//\)$' \
-      '|' "x$1" : 'x\(/\)' \
-      '|' .
+    expr  "X$1" : '\(X.*[^/]\)//*[^/][^/]*/*$' \
+      '|' "X$1" : '\(X//\)[^/]' \
+      '|' "X$1" : '\(X//\)$' \
+      '|' "X$1" : '\(X/\)' \
+      '|' X. | sed 's/^.//'
   }
 
   dromozoa_memcheck() {
@@ -32,27 +42,34 @@ then
     shift
     if test -f "$hook"
     then
-      case x$TMPDIR in
-        x) TMPDIR=/tmp;;
+      case X$TMPDIR in
+        X) TMPDIR=/tmp;;
       esac
       tmp=`(umask 077 && mktemp "$TMPDIR/dromozoa-XXXXXX" 2>/dev/null || :)`
-      case x$tmp in
-        x) tmp=$TMPDIR/dromozoa-$$-$RANDOM;;
+      case X$tmp in
+        X) tmp=$TMPDIR/dromozoa-$$-$RANDOM;;
       esac
       trap "rm -f '$tmp'" 0
       env \
-        DROMOZOA_HOOK_ATEXIT='leaks $DROMOZOA_HOOK_PID; echo $? >"$DROMOZOA_HOOK_TMP"' \
+        DROMOZOA_HOOK_ATEXIT='leaks "$DROMOZOA_HOOK_PID"; echo "$?" >"$DROMOZOA_HOOK_TMP"' \
         DROMOZOA_HOOK_TMP="$tmp" \
         DYLD_INSERT_LIBRARIES="$hook" \
         MallocStackLoggingNoCompact=1 \
         MallocScribble=1 \
         MallocPreScribble=1 \
           "$@"
-      status1=$?
-      status2=`cat "$tmp"`
-      case x$status1$status2 in
-        x00) exit 0;;
+      status=$?
+      case X$status in
+        X0) ;;
+        *) exit "$status";;
       esac
+      status=`cat "$tmp"`
+      case X$status in
+        X) dromozoa_error "cannot insert hook (maybe setuid/setgid binary or signed with entitlements)";;
+        X0) ;;
+        *) exit "$status";;
+      esac
+      exit
     fi
   }
 
@@ -67,7 +84,7 @@ then
     . "$root/lib/libdromozoa-hook.la"
     dromozoa_memcheck "$libdir/$dlname" "$@"
   else
-    echo "cannot find libdromozoa-hook" >&2
+    dromozoa_error "cannot find hook"
   fi
 elif valgrind --version 2>&1
 then
@@ -78,5 +95,6 @@ then
     --show-reachable=yes \
     --track-origins=yes \
       "$@"
+else
+  dromozoa_error "cannot find leaks or valgrind"
 fi
-exit 1

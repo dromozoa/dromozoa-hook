@@ -1,4 +1,6 @@
-# Copyright (C) 2016,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+#! /bin/sh -e
+
+# Copyright (C) 2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 #
 # This file is part of dromozoa-hook.
 #
@@ -15,18 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with dromozoa-hook.  If not, see <http://www.gnu.org/licenses/>.
 
-EXTRA_DIST = \
-	.gitignore \
-	README.md \
-	$(bin_SCRIPTS)
-TESTS = test1.sh test2-0.sh test2-1.sh
-
-bin_SCRIPTS = dromozoa-memcheck
-lib_LTLIBRARIES = libdromozoa-hook.la
-noinst_PROGRAMS = test1.exe test2.exe
-
-libdromozoa_hook_la_LDFLAGS = -shared
-libdromozoa_hook_la_SOURCES = hook.cpp
-
-test1_exe_SOURCES = test1.cpp
-test2_exe_SOURCES = test2.cpp
+if ./dromozoa-memcheck ./test2.exe 1
+then
+  exit 1
+fi
