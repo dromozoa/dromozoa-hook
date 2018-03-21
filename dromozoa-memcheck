@@ -17,6 +17,16 @@
 # You should have received a copy of the GNU General Public License
 # along with dromozoa-hook.  If not, see <http://www.gnu.org/licenses/>.
 
+dromozoa_error() {
+  if test -t 2
+  then
+    printf '\33[33m[ERROR] %s\33[0m\n' "$1" >&2
+  else
+    printf '[ERROR] %s\n' "$1" >&2
+  fi
+  exit 1
+}
+
 if leaks -h >/dev/null 2>&1
 then
   dromozoa_dirname() {
@@ -55,11 +65,11 @@ then
       esac
       status=`cat "$tmp"`
       case X$status in
-        X) echo "[dromozoa-hook] cannot hook (maybe setuid/setgid binary or signed with entitlements)" >&2; exit 1;;
+        X) dromozoa_error "cannot insert hook (maybe setuid/setgid binary or signed with entitlements)";;
         X0) ;;
         *) exit "$status";;
       esac
-      exit 0
+      exit
     fi
   }
 
@@ -74,7 +84,7 @@ then
     . "$root/lib/libdromozoa-hook.la"
     dromozoa_memcheck "$libdir/$dlname" "$@"
   else
-    echo "[dromozoa-hook] cannot find libdromozoa-hook" >&2
+    dromozoa_error "cannot find hook"
   fi
 elif valgrind --version 2>&1
 then
@@ -85,5 +95,6 @@ then
     --show-reachable=yes \
     --track-origins=yes \
       "$@"
+else
+  dromozoa_error "cannot find leaks or valgrind"
 fi
-exit 1
