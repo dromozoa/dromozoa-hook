@@ -1,4 +1,4 @@
-# Copyright (C) 2016 Tomoyuki Fujimori <moyu@dromozoa.com>
+# Copyright (C) 2016,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 #
 # This file is part of dromozoa-hook.
 #
@@ -22,6 +22,10 @@ EXTRA_DIST = \
 
 bin_SCRIPTS = dromozoa-memcheck
 lib_LTLIBRARIES = libdromozoa-hook.la
+noinst_PROGRAMS = test1 test2
 
 libdromozoa_hook_la_LDFLAGS = -shared
 libdromozoa_hook_la_SOURCES = hook.cpp
+
+test1_SOURCES = test1.cpp
+test2_SOURCES = test2.cpp

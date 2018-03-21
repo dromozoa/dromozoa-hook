@@ -18,11 +18,14 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#include <iostream>
+
 int main(int argc, char* argv[]) {
   if (uint8_t* ptr = static_cast<uint8_t*>(malloc(256))) {
     for (int i = 0; i < 256; ++i) {
       ptr[i] = i;
     }
+    std::cout << "malloc(256)=" << static_cast<void*>(ptr) << "\n";
     return 0;
   } else {
     return 1;
