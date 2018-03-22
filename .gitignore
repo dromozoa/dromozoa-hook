@@ -17,6 +17,7 @@
 /config.sub
 /configure
 /depcomp
+/dromozoa-hook-version
 /install-sh
 /libtool
 /ltmain.sh
