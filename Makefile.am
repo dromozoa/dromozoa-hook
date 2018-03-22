@@ -15,13 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with dromozoa-hook.  If not, see <http://www.gnu.org/licenses/>.
 
-EXTRA_DIST = \
-	.gitignore \
-	README.md \
-	$(bin_SCRIPTS) \
-	$(TESTS)
+EXTRA_DIST = .gitignore README.md $(bin_SCRIPTS) $(TESTS)
 TESTS = test1.sh test2-0.sh test2-1.sh
 
+bin_PROGRAMS = dromozoa-hook-version
 bin_SCRIPTS = dromozoa-memcheck
 lib_LTLIBRARIES = libdromozoa-hook.la
 noinst_PROGRAMS = test1.exe test2.exe
@@ -29,5 +26,6 @@ noinst_PROGRAMS = test1.exe test2.exe
 libdromozoa_hook_la_LDFLAGS = -shared
 libdromozoa_hook_la_SOURCES = hook.cpp
 
+dromozoa_hook_version_SOURCES = version.cpp
 test1_exe_SOURCES = test1.cpp
 test2_exe_SOURCES = test2.cpp
