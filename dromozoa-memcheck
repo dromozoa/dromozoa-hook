@@ -83,7 +83,7 @@ then
     fi
   fi
   dromozoa_error "cannot find hook"
-elif valgrind --version 2>&1 >/dev/null
+elif valgrind --version >/dev/null 2>&1
 then
   exec valgrind \
     --track-fds=yes \
