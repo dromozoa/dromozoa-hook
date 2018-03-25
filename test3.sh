@@ -17,5 +17,5 @@
 # You should have received a copy of the GNU General Public License
 # along with dromozoa-hook.  If not, see <http://www.gnu.org/licenses/>.
 
-. libtest3-handler.la
+. ./libtest3-handler.la
 ./dromozoa-memcheck ./test3.exe ".libs/$dlname"
