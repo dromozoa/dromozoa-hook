@@ -89,8 +89,7 @@ then
     --track-fds=yes \
     --error-exitcode=1 \
     --leak-check=full \
-    --show-reachable=yes \
-    --track-origins=yes \
+    --show-leak-kinds=all \
       "$@"
 else
   dromozoa_error "cannot find leaks or valgrind"
