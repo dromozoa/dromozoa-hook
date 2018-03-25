@@ -36,7 +36,7 @@ int main(int arc, char* argv[]) {
     }
     symbol("foo");
     symbol(0);
-  } while (false);
+  } while (0);
 
   dlclose(handle);
   return result;
