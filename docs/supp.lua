@@ -22,5 +22,6 @@ local content = handle:read "*a"
 handle:close()
 
 for block in content:gmatch "{\n   <insert_a_suppression_name_here>.-\n}\n" do
+  block = block:gsub("   fun:main\n", "   ...\n")
   io.write(block)
 end
