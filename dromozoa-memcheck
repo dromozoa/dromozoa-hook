@@ -85,11 +85,13 @@ then
   dromozoa_error "cannot find hook"
 elif valgrind --version >/dev/null 2>&1
 then
+  # --show-reachable=yes is equivalent to --show-leak-kinds=all.
   exec valgrind \
     --track-fds=yes \
     --error-exitcode=1 \
     --leak-check=full \
-    --show-leak-kinds=all \
+    --show-reachable=yes \
+    --track-origins=yes \
       "$@"
 else
   dromozoa_error "cannot find leaks or valgrind"
