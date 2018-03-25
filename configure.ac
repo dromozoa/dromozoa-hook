@@ -26,4 +26,6 @@ AC_CONFIG_FILES([Makefile])
 
 AC_PROG_CXX
 
+AC_SEARCH_LIBS([dlopen], [dl])
+
 AC_OUTPUT
