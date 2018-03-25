@@ -21,8 +21,7 @@ local handle = assert(io.open(filename))
 local content = handle:read "*a"
 handle:close()
 
-local handle = assert(io.open(filename, "w"))
 for block in content:gmatch "{\n   <insert_a_suppression_name_here>.-\n}\n" do
-  handle:write(block)
+  block = block:gsub("   fun:main\n", "   ...\n")
+  io.write(block)
 end
-handle:close()
