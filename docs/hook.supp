@@ -1,7 +1,6 @@
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
-   match-leak-kinds: reachable
    fun:memalign
    fun:tls_get_addr_tail
    fun:__cxa_get_globals
@@ -11,7 +10,6 @@
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
-   match-leak-kinds: reachable
    fun:malloc
    fun:tls_get_addr_tail
    fun:__tls_get_addr
@@ -22,7 +20,6 @@
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
-   match-leak-kinds: reachable
    ...
    fun:_dl_catch_error
    ...
