@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with dromozoa-hook.  If not, see <http://www.gnu.org/licenses/>.
 
-EXTRA_DIST = .gitignore README.md $(bin_SCRIPTS) $(TESTS)
+EXTRA_DIST = .gitignore README.md $(bin_SCRIPTS) $(TESTS) docs
 TESTS = test1.sh test2-0.sh test2-1.sh test3.sh
 
 bin_PROGRAMS = dromozoa-hook-version
