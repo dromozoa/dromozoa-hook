@@ -105,7 +105,7 @@ then
   if test -f "$here/dromozoa-memcheck.supp"
   then
     dromozoa_memcheck "$here/dromozoa-memcheck.supp" "$@"
-  elif test -f "$root/share/dromozoa-hook/sromozoa-memcheck.supp"
+  elif test -f "$root/share/dromozoa-hook/dromozoa-memcheck.supp"
   then
     dromozoa_memcheck "$root/share/dromozoa-hook/dromozoa-memcheck.supp" "$@"
   fi
