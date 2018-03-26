@@ -107,7 +107,7 @@ then
     dromozoa_memcheck "$here/dromozoa-memcheck.supp" "$@"
   elif test -f "$root/share/dromozoa-hook/sromozoa-memcheck.supp"
   then
-    dromozoa_memcheck "$root/share/dromozoa-hook/sromozoa-memcheck.supp" "$@"
+    dromozoa_memcheck "$root/share/dromozoa-hook/dromozoa-memcheck.supp" "$@"
   fi
   dromozoa_error "cannot find supp"
 else
