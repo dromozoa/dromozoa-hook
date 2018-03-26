@@ -6,7 +6,17 @@
    fun:tls_get_addr_tail
    fun:__cxa_get_globals
    fun:__cxa_throw
-   obj:*
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:tls_get_addr_tail
+   fun:__tls_get_addr
+   fun:__cxa_get_globals
+   fun:__cxa_throw
    ...
 }
 {
