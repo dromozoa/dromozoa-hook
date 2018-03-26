@@ -17,6 +17,14 @@
 # You should have received a copy of the GNU General Public License
 # along with dromozoa-hook.  If not, see <http://www.gnu.org/licenses/>.
 
+dromozoa_dirname() {
+  expr  "X$1" : '\(X.*[^/]\)//*[^/][^/]*/*$' \
+    '|' "X$1" : '\(X//\)[^/]' \
+    '|' "X$1" : '\(X//\)$' \
+    '|' "X$1" : '\(X/\)' \
+    '|' X. | sed 's/^.//'
+}
+
 dromozoa_error() {
   if test -t 2
   then
@@ -29,14 +37,6 @@ dromozoa_error() {
 
 if leaks -h >/dev/null 2>&1
 then
-  dromozoa_dirname() {
-    expr  "X$1" : '\(X.*[^/]\)//*[^/][^/]*/*$' \
-      '|' "X$1" : '\(X//\)[^/]' \
-      '|' "X$1" : '\(X//\)$' \
-      '|' "X$1" : '\(X/\)' \
-      '|' X. | sed 's/^.//'
-  }
-
   dromozoa_memcheck() {
     hook=$1
     shift
@@ -85,13 +85,31 @@ then
   dromozoa_error "cannot find hook"
 elif valgrind --version >/dev/null 2>&1
 then
-  exec valgrind \
-    --track-fds=yes \
-    --error-exitcode=1 \
-    --leak-check=full \
-    --show-reachable=yes \
-    --track-origins=yes \
-      "$@"
+  dromozoa_memcheck() {
+    supp=$1
+    shift
+    # --show-reachable=yes is equivalent to --show-leak-kinds=all.
+    exec valgrind \
+      --suppressions="$supp" \
+      --track-fds=yes \
+      --error-exitcode=1 \
+      --leak-check=full \
+      --show-reachable=yes \
+      --track-origins=yes \
+        "$@"
+  }
+
+  here=`dromozoa_dirname "$0"`
+  here=`(cd "$here" && pwd)`
+  root=`(cd "$here/.." && pwd)`
+  if test -f "$here/dromozoa-memcheck.supp"
+  then
+    dromozoa_memcheck "$here/dromozoa-memcheck.supp" "$@"
+  elif test -f "$root/share/dromozoa-hook/dromozoa-memcheck.supp"
+  then
+    dromozoa_memcheck "$root/share/dromozoa-hook/dromozoa-memcheck.supp" "$@"
+  fi
+  dromozoa_error "cannot find supp"
 else
   dromozoa_error "cannot find leaks or valgrind"
 fi

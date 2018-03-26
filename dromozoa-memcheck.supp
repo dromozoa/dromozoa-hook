@@ -1,0 +1,39 @@
+# CentOS 7
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:memalign
+   fun:tls_get_addr_tail
+   fun:__cxa_get_globals
+   fun:__cxa_throw
+   ...
+}
+# CentOS 6
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:memalign
+   fun:tls_get_addr_tail
+   fun:__tls_get_addr
+   fun:__cxa_get_globals
+   fun:__cxa_throw
+   ...
+}
+# Amazon Linux 2
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:tls_get_addr_tail
+   fun:__tls_get_addr
+   fun:__cxa_get_globals
+   fun:__cxa_throw
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:_dl_catch_error
+   ...
+}
