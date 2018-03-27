@@ -15,16 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with dromozoa-hook.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <sstream>
 #include <stdexcept>
 #include <iostream>
 
 namespace {
   void f(const char* ptr) {
     if (ptr) {
-      std::ostringstream out;
-      out << ptr;
-      std::cout << out.str() << "\n";
+      std::cout << ptr << "\n";
     } else {
       throw std::runtime_error("ptr is null");
     }
