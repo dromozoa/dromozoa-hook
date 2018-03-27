@@ -31,7 +31,7 @@ namespace {
     try {
       f(ptr);
     } catch (const std::exception& e) {
-      std::cerr << "caught exception: " << e.what() << "\n";
+      std::cout << "caught exception: " << e.what() << "\n";
     }
   }
 }
