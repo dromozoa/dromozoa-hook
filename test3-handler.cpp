@@ -15,13 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with dromozoa-hook.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <sstream>
 #include <stdexcept>
 #include <iostream>
 
 namespace {
   void f(const char* ptr) {
     if (ptr) {
-      std::cout << ptr << "\n";
+      std::ostringstream out;
+      out << ptr;
+      std::cout << out.str() << "\n";
     } else {
       throw std::runtime_error("ptr is null");
     }
@@ -31,7 +34,7 @@ namespace {
     try {
       f(ptr);
     } catch (const std::exception& e) {
-      std::cerr << "caught exception: " << e.what() << "\n";
+      std::cout << "caught exception: " << e.what() << "\n";
     }
   }
 }
