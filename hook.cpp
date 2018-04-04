@@ -36,7 +36,7 @@ namespace {
   };
 
   void hook_atexit() {
-    char** save = environ;
+    char** save_environ = environ;
     try {
       if (char* command = getenv("DROMOZOA_HOOK_ATEXIT")) {
         std::vector<char*> envs;
@@ -61,7 +61,7 @@ namespace {
         system(command);
       }
     } catch (...) {}
-    environ = save;
+    environ = save_environ;
   }
 }
 
