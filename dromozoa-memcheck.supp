@@ -24,6 +24,7 @@
    fun:__cxa_get_globals
    ...
 }
+
 # CentOS 6
 {
    <insert_a_suppression_name_here>
@@ -34,6 +35,7 @@
    fun:__cxa_get_globals
    ...
 }
+
 # Amazon Linux 2
 {
    <insert_a_suppression_name_here>
@@ -53,6 +55,7 @@
    fun:pthread_create@@GLIBC_2.2.5
    ...
 }
+
 # Linux
 {
    <insert_a_suppression_name_here>
