@@ -71,10 +71,15 @@ then
   here=`dromozoa_dirname "$0"`
   here=`(cd "$here" && pwd)`
   root=`(cd "$here/.." && pwd)`
-  if test -f "$here/.libs/libdromozoa-hook.dylib"
+  if test -f "$here/libdromozoa-hook.la"
   then
-    dromozoa_memcheck "$here/.libs/libdromozoa-hook.dylib" "$@"
-  elif test -f "$root/lib/libdromozoa-hook.la"
+    . "$here/libdromozoa-hook.la"
+    if test -f "$here/.libs/$dlname"
+    then
+      dromozoa_memcheck "$here/.libs/$dlname" "$@"
+    fi
+  fi
+  if test -f "$root/lib/libdromozoa-hook.la"
   then
     . "$root/lib/libdromozoa-hook.la"
     if test -f "$libdir/$dlname"
@@ -105,7 +110,8 @@ then
   if test -f "$here/dromozoa-memcheck.supp"
   then
     dromozoa_memcheck "$here/dromozoa-memcheck.supp" "$@"
-  elif test -f "$root/share/dromozoa-hook/dromozoa-memcheck.supp"
+  fi
+  if test -f "$root/share/dromozoa-hook/dromozoa-memcheck.supp"
   then
     dromozoa_memcheck "$root/share/dromozoa-hook/dromozoa-memcheck.supp" "$@"
   fi
