@@ -63,7 +63,7 @@ then
     esac
     status=`cat "$tmp"`
     case X$status in
-      X) dromozoa_error "cannot insert hook (maybe setuid/setgid binary or signed with entitlements)";;
+      X) dromozoa_error "could not insert hook (maybe setuid/setgid binary or signed with entitlements)";;
       *) exit "$status";;
     esac
   }
@@ -82,7 +82,7 @@ then
       dromozoa_memcheck "$libdir/$dlname" "$@"
     fi
   fi
-  dromozoa_error "cannot find hook"
+  dromozoa_error "could not find hook"
 elif valgrind --version >/dev/null 2>&1
 then
   dromozoa_memcheck() {
@@ -109,7 +109,7 @@ then
   then
     dromozoa_memcheck "$root/share/dromozoa-hook/dromozoa-memcheck.supp" "$@"
   fi
-  dromozoa_error "cannot find supp"
+  dromozoa_error "could not find suppression file"
 else
-  dromozoa_error "cannot find leaks or valgrind"
+  dromozoa_error "could not find command (leaks or valgrind)"
 fi
