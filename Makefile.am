@@ -16,7 +16,7 @@
 # along with dromozoa-hook.  If not, see <http://www.gnu.org/licenses/>.
 
 EXTRA_DIST = .gitignore README.md $(bin_SCRIPTS) $(TESTS)
-TESTS = test1.sh test2-0.sh test2-1.sh test3.sh
+TESTS = test1.sh test2-0.sh test2-1.sh test3.sh test4.sh test5.sh
 
 bin_PROGRAMS = dromozoa-hook-version
 bin_SCRIPTS = dromozoa-memcheck
@@ -33,3 +33,11 @@ test2_exe_SOURCES = test2.cpp
 test3_exe_SOURCES = test3.c
 libtest3_handler_la_LDFLAGS = -shared -rpath $(abs_top_builddir)/.libs
 libtest3_handler_la_SOURCES = test3-handler.cpp
+
+if HAVE_CURL
+noinst_PROGRAMS += test4.exe test5.exe
+test4_exe_SOURCES = test4.cpp
+test4_exe_LDADD = -lcurl
+test5_exe_SOURCES = test5.cpp
+test5_exe_LDADD = -lcurl
+endif

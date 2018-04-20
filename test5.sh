@@ -1,4 +1,6 @@
-# Copyright (C) 2016,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+#! /bin/sh -e
+
+# Copyright (C) 2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 #
 # This file is part of dromozoa-hook.
 #
@@ -15,20 +17,4 @@
 # You should have received a copy of the GNU General Public License
 # along with dromozoa-hook.  If not, see <http://www.gnu.org/licenses/>.
 
-m4_include([version.m4])
-AC_INIT([dromozoa-hook], DROMOZOA_HOOK_VERSION, [moyu@dromozoa.com], [], [https://github.com/dromozoa/dromozoa-hook/])
-AM_INIT_AUTOMAKE
-LT_INIT
-
-AC_CONFIG_MACRO_DIR([m4])
-AC_CONFIG_HEADER([config.h])
-AC_CONFIG_FILES([Makefile])
-
-AC_PROG_CXX
-
-AC_SEARCH_LIBS([dlopen], [dl])
-
-AC_CHECK_HEADER([curl/curl.h])
-AM_CONDITIONAL([HAVE_CURL], [test "X$ac_cv_header_curl_curl_h" = Xyes])
-
-AC_OUTPUT
+./dromozoa-memcheck ./test5.exe

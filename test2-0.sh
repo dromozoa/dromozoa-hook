@@ -17,9 +17,4 @@
 # You should have received a copy of the GNU General Public License
 # along with dromozoa-hook.  If not, see <http://www.gnu.org/licenses/>.
 
-if ./dromozoa-memcheck ./test2.exe 0
-then
-  :
-else
-  exit 1
-fi
+./dromozoa-memcheck ./test2.exe 0

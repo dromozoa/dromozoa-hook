@@ -25,6 +25,34 @@
    ...
 }
 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   obj:/usr/lib64/libnspr4.so
+   ...
+   fun:curl_global_init
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:PR_GetUniqueIdentity
+   ...
+   obj:/usr/lib64/libcurl.so.4.3.0
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:PR_CallOnce
+   ...
+   obj:/usr/lib64/libcurl.so.4.3.0
+   ...
+}
+
 # CentOS 6
 {
    <insert_a_suppression_name_here>
@@ -33,6 +61,43 @@
    fun:tls_get_addr_tail
    fun:__tls_get_addr
    fun:__cxa_get_globals
+   ...
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   obj:/lib64/libnspr4.so
+   ...
+   fun:curl_global_init
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:PR_GetUniqueIdentity
+   ...
+   obj:/usr/lib64/libcurl.so.4.1.1
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:PR_CallOnce
+   ...
+   obj:/usr/lib64/libcurl.so.4.1.1
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:PR_LoadLibraryWithFlags
+   ...
+   fun:PR_CallOnce
    ...
 }
 
@@ -53,6 +118,43 @@
    fun:allocate_dtv
    fun:_dl_allocate_tls
    fun:pthread_create@@GLIBC_2.2.5
+   ...
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:CRYPTO_malloc
+   ...
+   obj:/usr/lib64/libcurl.so.4.4.0
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:CRYPTO_malloc
+   ...
+   fun:EVP_SignFinal
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:CRYPTO_malloc
+   ...
+   fun:X509_PUBKEY_get
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:CRYPTO_malloc
+   ...
+   fun:X509_load_cert_crl_file
    ...
 }
 
