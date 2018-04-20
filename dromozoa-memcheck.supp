@@ -73,6 +73,25 @@
    fun:curl_global_init
    ...
 }
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:PR_GetUniqueIdentity
+   ...
+   obj:/usr/lib64/libcurl.so.4.1.1
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:PR_CallOnce
+   ...
+   obj:/usr/lib64/libcurl.so.4.1.1
+   ...
+}
+
 
 # Amazon Linux 2
 {
