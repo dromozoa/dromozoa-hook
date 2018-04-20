@@ -18,6 +18,10 @@
 #include <curl/curl.h>
 
 int main(int argc, char* argv[]) {
+  const char* url = "https://kotori.dromozoa.com/";
+  if (argc > 1) {
+    url = argv[1];
+  }
   CURLcode result = curl_global_init(CURL_GLOBAL_ALL);
   if (result != CURLE_OK) {
     return 1;
@@ -26,7 +30,7 @@ int main(int argc, char* argv[]) {
   if (!easy) {
     return 1;
   }
-  if (curl_easy_setopt(easy, CURLOPT_URL, "https://kotori.dromozoa.com/") != CURLE_OK) {
+  if (curl_easy_setopt(easy, CURLOPT_URL, url) != CURLE_OK) {
     return 1;
   }
   if (curl_easy_setopt(easy, CURLOPT_VERBOSE, 1) != CURLE_OK) {
