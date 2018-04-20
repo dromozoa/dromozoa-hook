@@ -17,4 +17,4 @@
 # You should have received a copy of the GNU General Public License
 # along with dromozoa-hook.  If not, see <http://www.gnu.org/licenses/>.
 
-./dromozoa-memcheck ./test2.exe 0
+./dromozoa-memcheck ./test4.exe

@@ -16,7 +16,7 @@
 # along with dromozoa-hook.  If not, see <http://www.gnu.org/licenses/>.
 
 EXTRA_DIST = .gitignore README.md $(bin_SCRIPTS) $(TESTS)
-TESTS = test1.sh test2-0.sh test2-1.sh test3.sh
+TESTS = test1.sh test2-0.sh test2-1.sh test3.sh test4.sh
 
 bin_PROGRAMS = dromozoa-hook-version
 bin_SCRIPTS = dromozoa-memcheck
