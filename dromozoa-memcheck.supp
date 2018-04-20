@@ -35,6 +35,24 @@
    fun:curl_global_init
    ...
 }
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:PR_GetUniqueIdentity
+   ...
+   obj:/usr/lib64/libcurl.so.4.3.0
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:PR_CallOnce
+   ...
+   obj:/usr/lib64/libcurl.so.4.3.0
+   ...
+}
 
 # CentOS 6
 {
@@ -83,7 +101,7 @@
    <insert_a_suppression_name_here>
    Memcheck:Leak
    ...
-   fun:CONF_modules_load_file
+   fun:CRYPTO_malloc
    ...
    obj:/usr/lib64/libcurl.so.4.4.0
    ...
@@ -92,9 +110,27 @@
    <insert_a_suppression_name_here>
    Memcheck:Leak
    ...
-   fun:ENGINE_load_builtin_engines
+   fun:CRYPTO_malloc
    ...
-   obj:/usr/lib64/libcurl.so.4.4.0
+   fun:X509_PUBKEY_get
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:CRYPTO_malloc
+   ...
+   fun:EVP_SignFinal
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:CRYPTO_malloc
+   ...
+   fun:X509_load_cert_crl_file
    ...
 }
 
