@@ -91,7 +91,15 @@
    obj:/usr/lib64/libcurl.so.4.1.1
    ...
 }
-
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:PR_LoadLibraryWithFlags
+   ...
+   fun:PR_CallOnce
+   ...
+}
 
 # Amazon Linux 2
 {
