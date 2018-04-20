@@ -16,13 +16,13 @@
 # along with dromozoa-hook.  If not, see <http://www.gnu.org/licenses/>.
 
 EXTRA_DIST = .gitignore README.md $(bin_SCRIPTS) $(TESTS)
-TESTS = test1.sh test2-0.sh test2-1.sh test3.sh test4.sh test5.sh
+TESTS = test1.sh test2-0.sh test2-1.sh test3.sh
 
 bin_PROGRAMS = dromozoa-hook-version
 bin_SCRIPTS = dromozoa-memcheck
 lib_LTLIBRARIES = libdromozoa-hook.la
 dist_pkgdata_DATA = dromozoa-memcheck.supp
-noinst_PROGRAMS = test1.exe test2.exe test3.exe test4.exe test5.exe
+noinst_PROGRAMS = test1.exe test2.exe test3.exe
 noinst_LTLIBRARIES = libtest3-handler.la
 
 libdromozoa_hook_la_LDFLAGS = -shared
@@ -31,9 +31,14 @@ dromozoa_hook_version_SOURCES = version.cpp
 test1_exe_SOURCES = test1.cpp
 test2_exe_SOURCES = test2.cpp
 test3_exe_SOURCES = test3.c
+libtest3_handler_la_LDFLAGS = -shared -rpath $(abs_top_builddir)/.libs
+libtest3_handler_la_SOURCES = test3-handler.cpp
+
+if HAVE_CURL
+TESTS += test4.sh test5.sh
+noinst_PROGRAMS += test4.exe test5.exe
 test4_exe_SOURCES = test4.cpp
 test4_exe_LDADD = -lcurl
 test5_exe_SOURCES = test5.cpp
 test5_exe_LDADD = -lcurl
-libtest3_handler_la_LDFLAGS = -shared -rpath $(abs_top_builddir)/.libs
-libtest3_handler_la_SOURCES = test3-handler.cpp
+endif

@@ -28,4 +28,7 @@ AC_PROG_CXX
 
 AC_SEARCH_LIBS([dlopen], [dl])
 
+AC_CHECK_HEADER([curl/curl.h])
+AM_CONDITIONAL([HAVE_CURL], [test "X$ac_cv_header_curl_curl_h" = Xyes])
+
 AC_OUTPUT
