@@ -25,6 +25,17 @@
    ...
 }
 
+# curl
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   obj:/usr/lib64/libnspr4.so
+   ...
+   fun:curl_global_init
+   ...
+}
+
 # CentOS 6
 {
    <insert_a_suppression_name_here>
