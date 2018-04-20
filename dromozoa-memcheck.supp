@@ -78,6 +78,26 @@
    ...
 }
 
+# curl
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:CONF_modules_load_file
+   ...
+   obj:/usr/lib64/libcurl.so.4.4.0
+   ...
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:ENGINE_load_builtin_engines
+   ...
+   obj:/usr/lib64/libcurl.so.4.4.0
+   ...
+}
+
 # Linux
 {
    <insert_a_suppression_name_here>
