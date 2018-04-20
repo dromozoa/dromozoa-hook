@@ -25,7 +25,6 @@
    ...
 }
 
-# curl
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -65,7 +64,6 @@
    ...
 }
 
-# curl
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -96,7 +94,6 @@
    ...
 }
 
-# curl
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
@@ -112,7 +109,7 @@
    ...
    fun:CRYPTO_malloc
    ...
-   fun:X509_PUBKEY_get
+   fun:EVP_SignFinal
    ...
 }
 {
@@ -121,7 +118,7 @@
    ...
    fun:CRYPTO_malloc
    ...
-   fun:EVP_SignFinal
+   fun:X509_PUBKEY_get
    ...
 }
 {
