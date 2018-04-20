@@ -47,6 +47,17 @@
    ...
 }
 
+# curl
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   obj:/lib64/libnspr4.so
+   ...
+   fun:curl_global_init
+   ...
+}
+
 # Amazon Linux 2
 {
    <insert_a_suppression_name_here>
