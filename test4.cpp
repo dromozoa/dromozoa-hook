@@ -20,7 +20,9 @@
 int main(int argc, char* argv[]) {
   CURLcode result = curl_global_init(CURL_GLOBAL_ALL);
   if (result == 0) {
-    curl_global_cleanup();
+    if (argc == 1) {
+      curl_global_cleanup();
+    }
     return 0;
   } else {
     return 1;
