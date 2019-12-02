@@ -167,16 +167,13 @@
    ...
 }
 
-# openssl 1.0.2
-#{
-#   <insert_a_suppression_name_here>
-#   Memcheck:Leak
-#   ...
-#   fun:malloc
-#   ...
-#   fun:CRYPTO_malloc
-#   ...
-#   fun:ERR_get_state
-#   fun:ERR_put_error
-#   ...
-#}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:CRYPTO_malloc
+   ...
+   fun:ERR_get_state
+   fun:ERR_put_error
+   ...
+}
