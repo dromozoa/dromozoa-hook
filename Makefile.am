@@ -1,4 +1,4 @@
-# Copyright (C) 2016,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+# Copyright (C) 2016,2018,2019 Tomoyuki Fujimori <moyu@dromozoa.com>
 #
 # This file is part of dromozoa-hook.
 #
@@ -16,7 +16,7 @@
 # along with dromozoa-hook.  If not, see <http://www.gnu.org/licenses/>.
 
 EXTRA_DIST = .gitignore README.md $(bin_SCRIPTS) $(TESTS)
-TESTS = test1.sh test2-0.sh test2-1.sh test3.sh test4.sh test5.sh
+TESTS = test1.sh test2-0.sh test2-1.sh test3.sh
 
 bin_PROGRAMS = dromozoa-hook-version
 bin_SCRIPTS = dromozoa-memcheck
@@ -40,4 +40,12 @@ test4_exe_SOURCES = test4.cpp
 test4_exe_LDADD = -lcurl
 test5_exe_SOURCES = test5.cpp
 test5_exe_LDADD = -lcurl
+TESTS += test4.sh test5.sh
+endif
+
+if HAVE_EVP
+noinst_PROGRAMS += test6.exe
+test6_exe_SOURCES = test6.cpp
+test6_exe_LDADD = -lcrypto
+TESTS += test6.sh
 endif

@@ -1,4 +1,4 @@
-# Copyright (C) 2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+# Copyright (C) 2018,2019 Tomoyuki Fujimori <moyu@dromozoa.com>
 #
 # This file is part of dromozoa-hook.
 #
@@ -166,3 +166,17 @@
    fun:_dl_catch_error
    ...
 }
+
+# openssl 1.0.2
+#{
+#   <insert_a_suppression_name_here>
+#   Memcheck:Leak
+#   ...
+#   fun:malloc
+#   ...
+#   fun:CRYPTO_malloc
+#   ...
+#   fun:ERR_get_state
+#   fun:ERR_put_error
+#   ...
+#}
